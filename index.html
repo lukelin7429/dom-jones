@@ -590,14 +590,6 @@
           <td style="padding:0.55rem 0; font-weight:600; letter-spacing:0.05em;">luke7429</td>
         </tr>
         <tr>
-          <td style="padding:0.55rem 0; color:var(--muted); vertical-align:top;">LINE QR Code</td>
-          <td style="padding:0.75rem 0;">
-            <img src="images/line-qr.jpg" alt="LINE QR Code — luke7429"
-              style="width:140px; height:140px; border-radius:12px; display:block; box-shadow:0 2px 10px rgba(0,0,0,0.12);" />
-            <span style="font-size:0.78rem; color:var(--muted); margin-top:0.35rem; display:block;">掃描加入 LINE / Scan to add on LINE</span>
-          </td>
-        </tr>
-        <tr>
           <td style="padding:0.55rem 0; color:var(--muted); vertical-align:top;">網站 Website</td>
           <td style="padding:0.55rem 0;"><a href="https://www.mycultureconnect.org" target="_blank" style="color:var(--blue); text-decoration:none; font-weight:600;">www.mycultureconnect.org</a></td>
         </tr>
@@ -607,10 +599,21 @@
     <div class="contact-links">
       <a href="mailto:luke@mycultureconnect.org" class="contact-link gold">✉️ 寄信聯絡 Email Us</a>
       <a href="https://www.mycultureconnect.org" class="contact-link" target="_blank">🌐 mycultureconnect.org</a>
-      <a href="https://line.me/ti/p/luke7429" class="contact-link" target="_blank" style="background:#06C755;">💬 LINE: luke7429</a>
+      <button onclick="document.getElementById('line-modal').style.display='flex'" class="contact-link" style="background:#06C755; border:none; cursor:pointer;">💬 LINE: luke7429</button>
     </div>
   </div>
 </section>
+
+<!-- LINE QR MODAL -->
+<div id="line-modal" onclick="this.style.display='none'" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:999; align-items:center; justify-content:center;">
+  <div onclick="event.stopPropagation()" style="background:#fff; border-radius:20px; padding:2rem; text-align:center; max-width:300px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+    <p style="font-weight:700; font-size:1.05rem; color:#06C755; margin-bottom:0.25rem;">💬 LINE</p>
+    <p style="font-size:0.85rem; color:#666; margin-bottom:1.25rem;">掃描 QR Code 加入 LINE<br><em>Scan to add on LINE</em></p>
+    <img src="images/line-qr.jpg" alt="LINE QR Code" style="width:220px; height:220px; border-radius:12px; display:block; margin:0 auto;" />
+    <p style="margin-top:1rem; font-weight:700; letter-spacing:0.08em; color:#333;">luke7429</p>
+    <button onclick="document.getElementById('line-modal').style.display='none'" style="margin-top:1.25rem; background:#f0f0f0; border:none; padding:0.6rem 2rem; border-radius:50px; cursor:pointer; font-size:0.85rem; color:#555;">關閉 Close</button>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer>
