@@ -37,12 +37,12 @@
 
     .wrap { max-width: 940px; margin: 0 auto; padding: 0 28px; }
 
-    /* ── HERO (MCC style: blurred photo + curve) ── */
+    /* ── HERO (MCC style: sharp photo + title overlay + asymmetric curve) ── */
     .hero {
       position: relative;
       width: 100%;
       overflow: hidden;
-      height: clamp(300px, 38vw, 440px);
+      height: clamp(380px, 52vw, 600px);
     }
     .hero-img {
       position: absolute;
@@ -51,41 +51,58 @@
       height: 100%;
       object-fit: cover;
       object-position: center 40%;
+      z-index: 0;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.18) 60%, rgba(0,0,0,0.05) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 24px 80px;
+      z-index: 2;
+    }
+    .hero-overlay h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      letter-spacing: 0;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 14px;
+      text-shadow: 0 2px 18px rgba(0,0,0,0.25);
+    }
+    .hero-overlay .sub {
+      font-family: var(--sub-font);
+      font-weight: 400;
+      font-size: clamp(1rem, 1.6vw, 1.15rem);
+      color: #fff;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 12px rgba(0,0,0,0.35);
     }
     .hero-curve {
       position: absolute;
       left: 0; right: 0; bottom: -1px;
       width: 100%;
-      height: 80px;
+      height: clamp(100px, 13vw, 150px);
       pointer-events: none;
-      z-index: 2;
-    }
-
-    /* ── HEADER BLOCK ── */
-    .header-block {
-      text-align: center;
-      padding: 56px 28px 28px;
-    }
-    .header-block h1 {
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: clamp(2.6rem, 6vw, 4.06rem);
-      letter-spacing: 0;
-      line-height: 1.15;
-      color: var(--text);
-      margin-bottom: 16px;
-    }
-    .header-block .sub {
-      font-family: var(--sub-font);
-      font-weight: 400;
-      font-size: 1rem;
-      color: var(--text);
-      letter-spacing: 0.01em;
+      z-index: 3;
+      display: block;
     }
 
     /* ── BODY SECTIONS ── */
     .intro {
-      padding: 8px 0 0;
+      padding: 64px 0 0;
     }
     .intro p {
       font-family: var(--en-font);
@@ -281,16 +298,14 @@
   <!-- HERO -->
   <section class="hero">
     <img class="hero-img" src="../images/yushin-group.jpg" alt="Dom Jones with students at Yushin Elementary School" />
-    <svg class="hero-curve" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0,80 C360,0 1080,0 1440,80 L1440,80 L0,80 Z" fill="#FFFFFF" />
+    <div class="hero-overlay">
+      <h1>Programs</h1>
+      <p class="sub">Bring the World to Taiwan's Classrooms</p>
+    </div>
+    <svg class="hero-curve" viewBox="0 100 1920 200" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M1920 300v-4.067c-455.162 0-690.876-51.203-1082.65-129.288C490.044 97.423 0 100.013 0 100.013V300h1920z" fill="#FFFFFF" />
     </svg>
   </section>
-
-  <!-- TITLE BLOCK -->
-  <header class="header-block">
-    <h1>Programs</h1>
-    <p class="sub">Bring the World to Taiwan's Classrooms</p>
-  </header>
 
   <!-- INTRO -->
   <section class="wrap intro">
