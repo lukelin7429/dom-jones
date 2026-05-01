@@ -250,12 +250,17 @@
       line-height: 1.5;
     }
 
-    /* ── FINAL CTA ── */
+    /* ── FINAL CTA (light, blends with MCC footer above) ── */
     .final-cta {
-      background: var(--text);
-      color: #fff;
-      padding: 56px 28px;
+      background: #fff;
+      color: var(--text);
+      padding: 24px 28px 64px;
       text-align: center;
+      border-top: 1px solid var(--line);
+      margin-top: 0;
+    }
+    .final-cta-inner {
+      padding-top: 48px;
     }
     .final-cta h3 {
       font-family: var(--serif);
@@ -263,12 +268,12 @@
       font-size: clamp(1.5rem, 3vw, 2.1rem);
       line-height: 1.25;
       margin-bottom: 14px;
-      color: #fff;
+      color: var(--text);
     }
     .final-cta p {
       font-family: var(--en-font);
       font-size: 0.95rem;
-      color: rgba(255,255,255,0.75);
+      color: var(--soft);
       margin-bottom: 24px;
       max-width: 580px;
       margin-left: auto;
