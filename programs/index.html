@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programs — My Culture Connect</title>
+  <meta name="description" content="Bring the world to Taiwan's classrooms. School visits with international advocate Dom Jones, in partnership with My Culture Connect." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange:    #F58220;
+      --orange-dk: #D86E10;
+      --text:      #1A1A1A;
+      --muted:     #555;
+      --line:      #E6E6E6;
+      --bg:        #FFFFFF;
+      --bg-soft:   #FAFAFA;
+      --en-font:   'Lato', 'Helvetica Neue', Arial, sans-serif;
+      --serif:     'Playfair Display', Georgia, serif;
+      --zh-font:   'PingFang TC', 'Apple LiGothic Medium', 'Microsoft JhengHei', 'Heiti TC', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--zh-font);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap { max-width: 940px; margin: 0 auto; padding: 0 28px; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+    .hero-img {
+      width: 100%;
+      height: clamp(280px, 40vw, 440px);
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+    }
+    .hero-curve {
+      position: absolute;
+      left: 0; right: 0; bottom: -1px;
+      width: 100%;
+      height: 80px;
+      pointer-events: none;
+    }
+
+    /* ── HEADER BLOCK ── */
+    .header-block {
+      text-align: center;
+      padding: 56px 28px 24px;
+    }
+    .header-block h1 {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+    .header-block .sub {
+      font-family: var(--en-font);
+      font-weight: 700;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    /* ── BODY SECTION ── */
+    .intro {
+      padding: 12px 0 8px;
+    }
+    .intro p {
+      font-family: var(--en-font);
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 1.1em;
+    }
+    .intro p.zh {
+      font-family: var(--zh-font);
+      font-size: 0.98rem;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    /* ── CTA BUTTON (primary, MCC orange) ── */
+    .cta-row {
+      text-align: center;
+      padding: 24px 0 56px;
+    }
+    .btn-orange {
+      display: inline-block;
+      background: var(--orange);
+      color: #fff;
+      font-family: var(--en-font);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 2px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+    .btn-orange:hover { background: var(--orange-dk); }
+    .btn-orange:active { transform: translateY(1px); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border-top: 1px solid var(--line);
+      max-width: 884px;
+      margin: 0 auto;
+    }
+
+    /* ── MEET DOM SECTION ── */
+    .meet {
+      padding: 56px 0 64px;
+    }
+    .meet-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .meet-photo {
+      width: 280px;
+      height: 360px;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+    }
+    .meet h2 {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 1.9rem;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+    .meet p {
+      font-family: var(--en-font);
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 1.1em;
+    }
+    .meet p.zh {
+      font-family: var(--zh-font);
+      font-size: 0.98rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 0;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .hero-img { height: 240px; }
+      .header-block { padding: 36px 20px 16px; }
+      .meet-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        justify-items: center;
+        text-align: left;
+      }
+      .meet-photo { width: 220px; height: 280px; }
+      .meet { padding: 40px 0 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img class="hero-img" src="../images/yushin-group.jpg" alt="Dom Jones with students at Yushin Elementary School" />
+    <svg class="hero-curve" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,80 C360,0 1080,0 1440,80 L1440,80 L0,80 Z" fill="#FFFFFF" />
+    </svg>
+  </section>
+
+  <!-- TITLE BLOCK -->
+  <header class="header-block">
+    <h1>Programs</h1>
+    <p class="sub">Bring the World to Taiwan's Classrooms</p>
+  </header>
+
+  <!-- INTRO -->
+  <section class="wrap intro">
+    <p>
+      Internationally recognized advocate Dom Jones is touring Taiwanese schools to inspire students through the lens of the United Nations Sustainable Development Goals. From education and gender equality to climate action and global citizenship, Dom brings world-stage perspective into the classroom — and shows students from every corner of Taiwan that their voices matter on the global stage.
+    </p>
+    <p class="zh">
+      「人師教育協會」邀請國際倡議者 Dom Jones 走訪台灣校園，以聯合國永續發展目標為主軸，把世界帶進台灣的教室。從教育平權、性別議題到氣候行動，Dom 用親身經歷讓孩子相信：每一個孩子的聲音，都值得被世界聽見。
+    </p>
+  </section>
+
+  <!-- CTA -->
+  <div class="wrap cta-row">
+    <a class="btn-orange" href="mailto:luke@mycultureconnect.org?subject=School%20Visit%20Inquiry%20%E2%80%94%20Dom%20Jones">
+      Invite Dom to Your School
+    </a>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- MEET DOM -->
+  <section class="wrap meet">
+    <div class="meet-grid">
+      <img class="meet-photo" src="../images/dom-jones.png" alt="Portrait of Dom Jones" />
+      <div class="meet-text">
+        <h2>Meet Dom Jones</h2>
+        <p>
+          Dom Jones is an international advocate, educator, and champion of the United Nations Sustainable Development Goals. Now based in Taiwan, she partners with My Culture Connect to bring global perspectives directly into schools across the country — with a particular focus on giving students in rural Taiwan access to the same conversations being had on the world stage.
+        </p>
+        <p class="zh">
+          Dom Jones 是國際倡議者、教育工作者，長年推動聯合國永續發展目標。目前定居台灣，與人師教育協會合作，把國際視野帶進台灣的校園。她特別關注偏鄉學童，讓孩子在自己的教室裡，就能參與和世界同樣的對話。
+        </p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
