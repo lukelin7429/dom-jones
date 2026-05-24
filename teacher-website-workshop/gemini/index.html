@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>用 Gemini 寫網頁 ── 給老師的研習講義</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  /* ── Language switcher ── */
+  .lang-bar {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-size: 14px;
+    z-index: 20;
+  }
+  .lang-bar a {
+    color: #555;
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 999px;
+    margin-left: 6px;
+    background: #fff;
+  }
+  .lang-bar a.active { background: #F58220; color: #fff; border-color: #F58220; }
+  .lang-bar a:hover  { border-color: #F58220; color: #F58220; }
+  .lang-bar a.active:hover { color: #fff; }
+  @media (max-width: 640px) {
+    .lang-bar { top: 14px; right: 14px; }
+  }
+  body {
+    font-family: 'PingFang TC', 'Apple LiGothic Medium', 'Microsoft JhengHei', sans-serif;
+    background: #ffffff;
+    color: #1a1a1a;
+    line-height: 1.75;
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    padding: 96px 24px 72px;
+    text-align: center;
+    border-bottom: 1px solid #efefef;
+  }
+  .hero .eyebrow {
+    display: inline-block;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    color: #b85c00;
+    background: #fff2e0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+    font-weight: 600;
+  }
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+  }
+  .hero .lead {
+    font-size: 21px;
+    color: #555;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ── Nav ── */
+  nav.toc {
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #efefef;
+    z-index: 10;
+  }
+  nav.toc ul {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    overflow-x: auto;
+  }
+  nav.toc a {
+    color: #444;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+  }
+  nav.toc a:hover { color: #F58220; border-bottom-color: #F58220; }
+
+  /* ── Main ── */
+  main { max-width: 880px; margin: 0 auto; padding: 64px 24px 40px; }
+  section { margin-bottom: 96px; scroll-margin-top: 80px; }
+  section h2 {
+    font-size: 36px;
+    font-weight: 800;
+    border-left: 8px solid #F58220;
+    padding-left: 18px;
+    margin-bottom: 32px;
+    line-height: 1.3;
+  }
+  section h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 40px 0 14px;
+    color: #222;
+  }
+  section p { margin-bottom: 16px; }
+  section ul, section ol { margin: 12px 0 20px 24px; }
+  section li { margin-bottom: 8px; }
+
+  /* ── Step list ── */
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    margin: 24px 0 32px;
+    padding: 0;
+  }
+  .steps > li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 64px;
+    margin-bottom: 24px;
+    min-height: 44px;
+  }
+  .steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 0;
+    width: 44px; height: 44px;
+    background: #F58220;
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 20px;
+  }
+  .steps strong { display: block; font-size: 19px; margin-bottom: 4px; }
+
+  /* ── Prompt box ── */
+  .prompt {
+    background: #1a1a1a;
+    color: #f5f5f5;
+    padding: 24px 28px;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'PingFang TC', Menlo, monospace;
+    font-size: 16px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    margin: 16px 0 24px;
+    position: relative;
+    overflow-x: auto;
+  }
+  .prompt::before {
+    content: "提示詞範例 · 可複製貼到 Gemini";
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: #F58220;
+    margin-bottom: 12px;
+    font-family: 'PingFang TC', sans-serif;
+    font-weight: 700;
+  }
+
+  /* ── Callouts ── */
+  .callout {
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-size: 17px;
+  }
+  .callout.note  { background: #fff7ec; border-left: 4px solid #F58220; }
+  .callout.warn  { background: #fff0f0; border-left: 4px solid #d94545; }
+  .callout.ok    { background: #ecf8ee; border-left: 4px solid #3a9d4a; }
+  .callout strong { display: block; margin-bottom: 6px; font-size: 16px; letter-spacing: 0.05em; }
+
+  /* ── Compare table ── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0 32px;
+  }
+  .compare .card {
+    padding: 20px 22px;
+    border-radius: 8px;
+    border: 1px solid #e6e6e6;
+    background: #fafafa;
+  }
+  .compare .card h4 { font-size: 18px; margin-bottom: 10px; }
+  .compare .bad   { background: #fff5f5; border-color: #f5cccc; }
+  .compare .good  { background: #f4faf5; border-color: #c9e3ce; }
+  .compare .bad h4   { color: #b32424; }
+  .compare .good h4  { color: #2a7837; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 48px 24px 64px;
+    border-top: 1px solid #efefef;
+    color: #888;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  footer strong { color: #555; font-weight: 700; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 60px 20px 48px; }
+    .hero h1 { font-size: 34px; }
+    .hero .lead { font-size: 18px; }
+    section h2 { font-size: 28px; }
+    section h3 { font-size: 20px; }
+    body { font-size: 17px; }
+    .compare { grid-template-columns: 1fr; }
+    .prompt { font-size: 15px; padding: 18px 20px; }
+    .steps > li { padding-left: 56px; }
+    .steps > li::before { width: 38px; height: 38px; font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <a href="index.html" class="active">中文</a>
+  <a href="en.html">English</a>
+</div>
+
+<div class="hero">
+  <span class="eyebrow">AI 教師研習講義</span>
+  <h1>用 Gemini 寫網頁</h1>
+  <p class="lead">不寫程式碼，也能做出自己的教學網站。<br>三個步驟：產生首頁、擴充內頁、後續維修。</p>
+</div>
+
+<nav class="toc">
+  <ul>
+    <li><a href="#concept">先建立觀念</a></li>
+    <li><a href="#part1">1. 產生 index 首頁</a></li>
+    <li><a href="#part2">2. 擴充成完整網站</a></li>
+    <li><a href="#part3">3. 後續維修流程</a></li>
+    <li><a href="#mindset">心法總結</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- ============ 觀念 ============ -->
+<section id="concept">
+  <h2>先建立三個觀念</h2>
+
+  <h3>① 一個網站，其實就是一堆 .html 檔案</h3>
+  <p>你看到的每一個網頁，背後都是一個檔案。一個學校網站的資料夾，可能長這樣：</p>
+  <div class="prompt" style="background:#f5f5f5;color:#333;">my-website/
+├── index.html        ← 首頁（封面）
+├── lesson1.html      ← 第一單元
+├── lesson2.html      ← 第二單元
+└── images/
+    └── school.jpg    ← 圖片資料夾</div>
+  <p>瀏覽者打開網站，預設先看到的就是 <strong>index.html</strong>。其他頁面用「連結」串起來。</p>
+
+  <h3>② Gemini 的 Canvas 是這次研習的主角</h3>
+  <p>Gemini（gemini.google.com）有一個「Canvas」模式，可以邊寫 HTML 邊預覽，就像在 Word 寫文件一樣即時看到結果。我們今天不用對話框，<strong>全程都在 Canvas 裡操作</strong>。</p>
+  <div class="callout note">
+    <strong>怎麼開啟 Canvas</strong>
+    在 Gemini 對話框下方，找到「Canvas」按鈕點下去；或在訊息開頭打「請使用 Canvas」，它會自動切過去。
+  </div>
+
+  <h3>③ 你是設計師，Gemini 是工讀生</h3>
+  <p>Gemini 不會猜你心裡的想法。你給的指令越具體（顏色、結構、字體、要幾個區塊），它就越接近你要的。今天我們會練「怎麼描述需求」這件事。</p>
+</section>
+
+<!-- ============ Part 1 ============ -->
+<section id="part1">
+  <h2>1. 怎麼產生 index 首頁</h2>
+  <p>index 是整個網站的封面。先把首頁做出來，後面才有方向。</p>
+
+  <ol class="steps">
+    <li>
+      <strong>打開 Gemini，切到 Canvas 模式</strong>
+      網址：gemini.google.com → 在對話框點「Canvas」。
+    </li>
+    <li>
+      <strong>用下方的範本，把【】裡換成你的內容</strong>
+      不要光說「幫我做網站」，要說「我要做什麼樣的網站」。
+    </li>
+    <li>
+      <strong>送出後，等 Canvas 右側即時生成預覽</strong>
+      左邊是程式碼，右邊是實際看到的樣子。
+    </li>
+    <li>
+      <strong>看不順眼，繼續用中文跟它說「把標題改大一點」「換成深綠色」</strong>
+      它會直接更新 Canvas，不需要重新貼 code。
+    </li>
+    <li>
+      <strong>滿意後，按 Canvas 右上「下載」或「複製程式碼」</strong>
+      存成 index.html。完成。
+    </li>
+  </ol>
+
+  <h3>可直接複製的 Prompt</h3>
+  <div class="prompt">請使用 Canvas，幫我寫一個 index.html（單檔，含 HTML + CSS）。
+
+【主題】OO 國小三年級英語課首頁
+【需要的區塊】
+1. 大標題：學校名稱 + 一句英文 slogan
+2. 簡短歡迎詞（兩句話）
+3. 三張卡片，分別連到三個單元：
+   - Unit 1 - My Family（連到 lesson1.html）
+   - Unit 2 - My School（連到 lesson2.html）
+   - Unit 3 - My Hobbies（連到 lesson3.html）
+4. 頁尾：老師署名與學校名稱
+
+【設計要求】
+- 白底，主色用溫暖的橘色 (#F58220)
+- 中文字體請用 'PingFang TC'
+- 字級要大，方便小學生閱讀
+- 手機上也要看得清楚（要 responsive）
+
+請輸出完整單檔 HTML，CSS 直接寫在 &lt;style&gt; 標籤裡。</div>
+
+  <div class="callout ok">
+    <strong>為什麼這樣寫</strong>
+    指定主題、區塊、設計風格、技術細節（單檔、responsive），四件事都講清楚，Gemini 第一次就能交出可用的版本。
+  </div>
+</section>
+
+<!-- ============ Part 2 ============ -->
+<section id="part2">
+  <h2>2. 如何擴充成完整網站</h2>
+  <p>首頁做完，接下來把連結的每個內頁也做出來。原則：<strong>一次只做一頁，不要叫它一次寫整個網站</strong>。</p>
+
+  <ol class="steps">
+    <li>
+      <strong>在同一個 Canvas 對話裡，接著請它寫第二頁</strong>
+      Gemini 會記得首頁的設計風格，新頁面會自動延續配色與字體。
+    </li>
+    <li>
+      <strong>每寫好一頁，就下載存成對應的檔名</strong>
+      lesson1.html、lesson2.html…檔名要跟首頁裡的連結對得起來。
+    </li>
+    <li>
+      <strong>圖片用佔位符，自己後製換上</strong>
+      Gemini 不會生圖片，要的圖你自己拍或找。命名清楚放進 images/ 資料夾。
+    </li>
+    <li>
+      <strong>每寫完一頁，先在自己電腦上雙擊 .html 開來看</strong>
+      瀏覽器會直接打開檔案，可以確認連結通不通、樣子對不對。
+    </li>
+  </ol>
+
+  <h3>可直接複製的 Prompt（內頁）</h3>
+  <div class="prompt">請延續剛剛 index.html 的設計風格與配色，
+幫我寫 lesson1.html（單檔 HTML + CSS）。
+
+【主題】Unit 1 - My Family
+【需要的區塊】
+1. 頁面最上方：一個返回首頁的連結 → 寫成 &lt;a href="index.html"&gt;← 回首頁&lt;/a&gt;
+2. 單元簡介（兩句中英對照）
+3. 五張單字卡片，並排顯示，每張內含：
+   - 英文單字（大字）
+   - 中文翻譯
+   - 一個 emoji
+   單字：father 👨 / mother 👩 / brother 👦 / sister 👧 / pet 🐶
+4. 例句區塊：「This is my family.」（大字置中）
+5. 頁尾與 index.html 一致
+
+請輸出完整單檔 HTML。</div>
+
+  <div class="callout note">
+    <strong>給研習老師的提醒</strong>
+    教學網站的內頁通常都長得很像（單元簡介＋單字卡＋例句＋返回連結）。第一頁做好以後，後面的頁面可以用「同樣結構，主題換成 OO」這種短指令快速複製。
+  </div>
+</section>
+
+<!-- ============ Part 3 ============ -->
+<section id="part3">
+  <h2>3. 後續網頁要修改時的維修流程</h2>
+  <p>這是大部分老師會卡關的地方。一定要記住一句口訣：</p>
+  <div class="callout warn">
+    <strong>維修黃金口訣</strong>
+    <span style="font-size:21px; font-weight:700; color:#222;">「只改 X，其他完全不要動，輸出完整版」</span>
+  </div>
+
+  <h3>標準維修五步驟</h3>
+  <ol class="steps">
+    <li>
+      <strong>先備份</strong>
+      把要改的檔案（例如 lesson1.html）複製一份，改名 lesson1_backup.html。改壞了還有救。
+    </li>
+    <li>
+      <strong>用記事本／TextEdit 打開原檔，全選複製</strong>
+      Mac：Cmd+A 全選 → Cmd+C 複製。Windows：Ctrl+A → Ctrl+C。
+    </li>
+    <li>
+      <strong>到 Gemini Canvas，先貼上原始碼，再下指令</strong>
+      順序很重要：先讓它看到完整現況，再告訴它要改什麼。
+    </li>
+    <li>
+      <strong>下指令要「精準＋限制範圍」</strong>
+      指明改哪裡、不要動哪裡，要求輸出完整版（不是只回給你改的那段）。
+    </li>
+    <li>
+      <strong>拿到新版 → 覆蓋原檔 → 瀏覽器打開檢查</strong>
+      確認沒問題才上傳到 GitHub。
+    </li>
+  </ol>
+
+  <h3>可直接複製的 Prompt（修改既有頁面）</h3>
+  <div class="prompt">以下是我目前的 lesson1.html。
+請你只做一件事：把「father」那張卡片的 emoji 從 👨 改成 👨‍🦱。
+
+【重要規則】
+- 其他所有內容、設計、CSS、註解，完全保持原樣
+- 不要重新排版、不要「順便優化」、不要替我精簡程式碼
+- 請輸出完整的新 HTML，含所有未改動的部分，
+  讓我可以直接覆蓋原檔
+
+以下是原始 HTML：
+
+（在這裡貼上你的整份 lesson1.html）</div>
+
+  <h3>常見錯誤 vs. 正確做法</h3>
+  <div class="compare">
+    <div class="card bad">
+      <h4>✗ 錯誤示範</h4>
+      <p>「lesson1 的單字卡幫我改一下」</p>
+      <p style="margin-top:10px; font-size:15px; color:#666;">→ Gemini 會自由發揮，常常把你原本喜歡的設計也順手改掉。</p>
+    </div>
+    <div class="card good">
+      <h4>✓ 正確做法</h4>
+      <p>「只把第三張卡的英文從 brother 改成 grandfather，emoji 改成 👴，其他不動，輸出完整 HTML」</p>
+    </div>
+  </div>
+  <div class="compare">
+    <div class="card bad">
+      <h4>✗ 錯誤示範</h4>
+      <p>只貼一小段 code 給 Gemini 看，希望它「補完」</p>
+      <p style="margin-top:10px; font-size:15px; color:#666;">→ 它會自己腦補你沒貼的部分，導致原始檔被簡化。</p>
+    </div>
+    <div class="card good">
+      <h4>✓ 正確做法</h4>
+      <p>把整份原始檔貼上去，明確指明修改範圍，要求「輸出完整新版本」</p>
+    </div>
+  </div>
+  <div class="compare">
+    <div class="card bad">
+      <h4>✗ 錯誤示範</h4>
+      <p>沒備份就直接改，改壞了想還原找不回</p>
+    </div>
+    <div class="card good">
+      <h4>✓ 正確做法</h4>
+      <p>動手前先複製一份原檔，命名 _backup。確認新版沒問題才取代</p>
+    </div>
+  </div>
+
+  <div class="callout note">
+    <strong>給研習老師的提醒</strong>
+    維修最常見的災難是「想改一點點，結果整頁被 AI 重做」。把「只改 X、其他不動、輸出完整版」這三件事寫進每一次 prompt，就能避免 95% 的事故。
+  </div>
+</section>
+
+<!-- ============ 心法 ============ -->
+<section id="mindset">
+  <h2>心法總結</h2>
+  <ul>
+    <li><strong>越具體越好。</strong>主題、區塊、顏色、字體都要寫清楚，不要讓 AI 猜。</li>
+    <li><strong>一次只做一件事。</strong>不要叫它一次寫整個網站，也不要一次改五個地方。</li>
+    <li><strong>每次都備份。</strong>HTML 檔很小，多備份不會吃掉硬碟。</li>
+    <li><strong>修改時永遠加上「其他不動，輸出完整版」。</strong>這一條口訣可以避掉大部分慘案。</li>
+    <li><strong>瀏覽器是最好的檢查工具。</strong>雙擊 .html 就會開，邊改邊看，比甚麼都重要。</li>
+    <li><strong>AI 不是魔法，是工讀生。</strong>你是設計師，方向是你定的。</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <strong>人師教育協會 · My Culture Connect</strong><br>
+  AI 教師研習講義 — 用 Gemini 寫網頁<br>
+  本頁可自由複製、改編、發送給其他老師使用。
+</footer>
+
+</body>
+</html>
