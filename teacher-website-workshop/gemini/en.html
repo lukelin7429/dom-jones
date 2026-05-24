@@ -227,6 +227,47 @@
   }
   footer strong { color: #555; font-weight: 700; }
 
+  /* ── Tables ── */
+  .table-wrap { overflow-x: auto; margin: 12px 0 28px; }
+  table.compact {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  table.compact th, table.compact td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  table.compact tbody tr:last-child td { border-bottom: none; }
+  table.compact thead th {
+    background: #fafafa;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #555;
+  }
+  table.compact tr.rec { background: #f4faf5; }
+  table.compact tr.rec td:first-child::after { content: " ★"; color: #2a7837; font-weight: 700; }
+  table.compact tr.avoid { color: #b32424; background: #fff7f7; }
+
+  /* ── Inline code ── */
+  code {
+    background: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 0.92em;
+    color: #333;
+  }
+  .prompt code, .tree code { background: transparent; padding: 0; color: inherit; }
+
   @media (max-width: 640px) {
     .hero { padding: 80px 20px 48px; }
     .hero h1 { font-size: 34px; }
@@ -239,6 +280,8 @@
     .steps > li { padding-left: 56px; }
     .steps > li::before { width: 38px; height: 38px; font-size: 17px; }
     .lang-bar { top: 14px; right: 14px; }
+    table.compact { font-size: 14px; }
+    table.compact th, table.compact td { padding: 10px 12px; }
   }
 </style>
 </head>
@@ -261,6 +304,8 @@
     <li><a href="#part1">1. Create your index page</a></li>
     <li><a href="#part2">2. Build out the site</a></li>
     <li><a href="#part3">3. Safe maintenance</a></li>
+    <li><a href="#part4">4. Publish on GitHub</a></li>
+    <li><a href="#part5">5. Custom domain &amp; DNS</a></li>
     <li><a href="#mindset">Mindset</a></li>
   </ul>
 </nav>
@@ -479,6 +524,193 @@ Here is the original HTML:
   <div class="callout note">
     <strong>Tip for workshop teachers</strong>
     The most common disaster is "I wanted to change one tiny thing, and the AI redid the entire page." Bake these three phrases into every edit prompt — "change only X, leave the rest alone, output the full file" — and you'll avoid 95% of accidents.
+  </div>
+</section>
+
+<!-- ============ Part 4 ============ -->
+<section id="part4">
+  <h2>4. Publish on GitHub</h2>
+  <p>You have your files, but they live on your computer — only you can see them. <strong>GitHub</strong> is a free "cloud drive + auto-hosting" service: drop a folder with <code>index.html</code> in it, and GitHub turns it into a real website anyone in the world can visit.</p>
+
+  <h3>① Create your free GitHub account (3 minutes)</h3>
+  <ol class="steps">
+    <li>
+      <strong>Go to github.com and click the green "Sign up" button</strong>
+    </li>
+    <li>
+      <strong>Use a personal email — not your school address</strong>
+      School emails often block third-party verification mail.
+    </li>
+    <li>
+      <strong>Pick a username</strong>
+      Short, lowercase, no spaces. This becomes part of your URL: <code>username.github.io</code>. Use your real name or a short identifier — don't pick "sarah-english-teacher-2026."
+    </li>
+    <li>
+      <strong>Set a password → click the verification email link</strong>
+      Done.
+    </li>
+  </ol>
+
+  <h3>② Create your first repository</h3>
+  <p>A repository (repo) is just GitHub's word for a folder. To host a website, you need a repo to hold the files.</p>
+  <ol class="steps">
+    <li>
+      <strong>After logging in, click the "+" in the top-right → New repository</strong>
+    </li>
+    <li>
+      <strong>Name your repo</strong>
+      Lowercase, hyphenated. Examples: <code>my-classroom</code>, <code>english-portfolio</code>, <code>grade3-english</code>. The name shows up in your URL — pick carefully, it's hard to change.
+    </li>
+    <li>
+      <strong>Set visibility to Public</strong>
+      Free GitHub Pages only supports Public repos. Don't worry — only the HTML you upload is visible. Your email and password stay private.
+    </li>
+    <li>
+      <strong>Tick "Add a README file"</strong>
+      Optional, but recommended — keeps the repo from being empty.
+    </li>
+    <li>
+      <strong>Click the green "Create repository" button</strong>
+      You now have a cloud folder ready for your files.
+    </li>
+  </ol>
+
+  <h3>③ Upload your index.html</h3>
+  <ol class="steps">
+    <li>
+      <strong>Open your new repo on github.com</strong>
+    </li>
+    <li>
+      <strong>Click "Add file" → "Upload files"</strong>
+      Just above the file list.
+    </li>
+    <li>
+      <strong>Drag your index.html onto the dashed upload area</strong>
+      Or click to browse. If you have an <code>images/</code> folder, drag that too.
+    </li>
+    <li>
+      <strong>Scroll down and click the green "Commit changes" button</strong>
+      Your file is now in the repo.
+    </li>
+  </ol>
+
+  <h3>④ Turn on GitHub Pages</h3>
+  <p>At this point your files are in the cloud, but the website isn't live yet. GitHub Pages is the free hosting feature — you have to switch it on manually.</p>
+  <ol class="steps">
+    <li>
+      <strong>In your repo, click the "Settings" tab</strong>
+      At the right end of the tabs row.
+    </li>
+    <li>
+      <strong>In the left sidebar, scroll down and click "Pages"</strong>
+    </li>
+    <li>
+      <strong>Under "Source," choose "Deploy from a branch"</strong>
+      Branch = <code>main</code>, folder = <code>/ (root)</code>.
+    </li>
+    <li>
+      <strong>Click "Save" and wait about a minute</strong>
+    </li>
+    <li>
+      <strong>Refresh the page — a green banner appears with your live URL</strong>
+      It looks like: <code>https://username.github.io/my-classroom</code>. That's your website — anyone in the world can open it.
+    </li>
+  </ol>
+
+  <h3>⑤ Share your URL</h3>
+  <p>Just send the link in email, group chat, on a flyer, or in a school newsletter. Students, parents, the principal — anyone with the URL can open it in any browser. No login, no install, no app required.</p>
+
+  <div class="callout note">
+    <strong>How to update your site later</strong>
+    Go to the same repo → "Add file" → "Upload files" → drag the new <code>index.html</code> on top of the old one (GitHub recognizes the same filename and replaces it). The live site refreshes in about a minute. Combine this with the maintenance discipline from Section 3 and you have a complete workflow.
+  </div>
+</section>
+
+<!-- ============ Part 5 ============ -->
+<section id="part5">
+  <h2>5. Bonus: Buy a custom domain &amp; set up DNS with Gemini's help</h2>
+  <p>Want <code>www.mrwang-english.com</code> instead of <code>username.github.io/my-classroom</code>? You can — for about US$10–15 per year. The domain stays yours as long as you keep renewing.</p>
+  <p>This section is <strong>optional</strong> — the free <code>github.io</code> URL is perfectly fine for years. Come back to this when you're ready to upgrade.</p>
+
+  <h3>① Where to buy a domain</h3>
+  <div class="table-wrap">
+    <table class="compact">
+      <thead>
+        <tr><th>Registrar</th><th>Price / year</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr class="rec"><td>Cloudflare Registrar</td><td>US$9–12</td><td>Cheapest, no upsells — <strong>recommended</strong></td></tr>
+        <tr><td>Namecheap</td><td>US$10–15</td><td>Beginner-friendly interface</td></tr>
+        <tr><td>Porkbun</td><td>US$9–12</td><td>Free WHOIS privacy included</td></tr>
+        <tr class="avoid"><td>GoDaddy</td><td>US$20+</td><td>Aggressive upsells — avoid</td></tr>
+        <tr class="avoid"><td>Google Domains</td><td>—</td><td>Closed; merged into Squarespace</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>② Tell GitHub about your custom domain</h3>
+  <ol class="steps">
+    <li>
+      <strong>Go to your repo → Settings → Pages</strong>
+    </li>
+    <li>
+      <strong>Enter your domain in the "Custom domain" field</strong>
+      Example: <code>www.mrwang-english.com</code>
+    </li>
+    <li>
+      <strong>Click Save</strong>
+      That's GitHub's side done. Next, the registrar.
+    </li>
+  </ol>
+
+  <h3>③ Add DNS records at your registrar</h3>
+  <p>DNS records are how the internet knows "this domain should point to GitHub's servers." Log in to wherever you bought the domain and add these five records:</p>
+  <div class="table-wrap">
+    <table class="compact">
+      <thead><tr><th>Type</th><th>Host</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>CNAME</td><td>www</td><td>username.github.io</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.108.153</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.109.153</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.110.153</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.111.153</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Replace <code>username</code> with your actual GitHub username. After saving, wait 10 minutes to 24 hours for DNS to propagate.</p>
+
+  <h3>④ Stuck? Ask Gemini to walk you through DNS</h3>
+  <p>Every registrar has a different dashboard (Cloudflare, Namecheap, GoDaddy all look different). The easiest fix is to ask Gemini for click-by-click instructions for your specific registrar.</p>
+
+  <div class="prompt">I just bought a domain at Cloudflare: mrwang-english.com
+My website is hosted on GitHub Pages: username.github.io/my-classroom
+(Replace "username" with your actual GitHub username.)
+
+Please walk me through, step by step:
+where exactly in the Cloudflare dashboard I click,
+which button to press, and what to type in each field
+to add these DNS records:
+
+- 1 CNAME record
+  Host: www
+  Value: username.github.io
+
+- 4 A records (pointing to GitHub's IPs)
+  Host: @
+  Value: 185.199.108.153 / 109.153 / 110.153 / 111.153
+
+Be concrete (which menu, which button, which field) —
+not just conceptual explanations.
+If I get stuck on a step, I'll ask follow-up questions.</div>
+
+  <div class="callout note">
+    <strong>The final step: HTTPS padlock</strong>
+    Once DNS has propagated (1 hour to 1 day), go back to GitHub → Settings → Pages and you'll see an "Enforce HTTPS" checkbox. Tick it. Your site now shows the 🔒 padlock in browsers — looks like a real, professional site, and browsers stop showing "Not Secure" warnings.
+  </div>
+
+  <div class="callout warn">
+    <strong>Don't rush to buy a domain</strong>
+    The most common trap for beginners: buying a domain before the website is even good. Better plan: use the free <code>github.io</code> URL for 3–6 months. Once you're sure you'll keep maintaining the site, then buy. If you forget to renew, someone else can snatch the domain — don't waste the money.
   </div>
 </section>
 

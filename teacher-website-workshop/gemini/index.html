@@ -214,6 +214,46 @@
   }
   footer strong { color: #555; font-weight: 700; }
 
+  /* ── Tables ── */
+  .table-wrap { overflow-x: auto; margin: 12px 0 28px; }
+  table.compact {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  table.compact th, table.compact td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  table.compact tbody tr:last-child td { border-bottom: none; }
+  table.compact thead th {
+    background: #fafafa;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: #555;
+  }
+  table.compact tr.rec { background: #f4faf5; }
+  table.compact tr.rec td:first-child::after { content: " ★"; color: #2a7837; font-weight: 700; }
+  table.compact tr.avoid { color: #b32424; background: #fff7f7; }
+
+  /* ── Inline code ── */
+  code {
+    background: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 0.92em;
+    color: #333;
+  }
+  .prompt code { background: transparent; padding: 0; color: inherit; }
+
   @media (max-width: 640px) {
     .hero { padding: 60px 20px 48px; }
     .hero h1 { font-size: 34px; }
@@ -225,6 +265,8 @@
     .prompt { font-size: 15px; padding: 18px 20px; }
     .steps > li { padding-left: 56px; }
     .steps > li::before { width: 38px; height: 38px; font-size: 17px; }
+    table.compact { font-size: 14px; }
+    table.compact th, table.compact td { padding: 10px 12px; }
   }
 </style>
 </head>
@@ -247,6 +289,8 @@
     <li><a href="#part1">1. 產生 index 首頁</a></li>
     <li><a href="#part2">2. 擴充成完整網站</a></li>
     <li><a href="#part3">3. 後續維修流程</a></li>
+    <li><a href="#part4">4. 上傳到 GitHub</a></li>
+    <li><a href="#part5">5. 自訂網域 + DNS</a></li>
     <li><a href="#mindset">心法總結</a></li>
   </ul>
 </nav>
@@ -465,6 +509,191 @@
   <div class="callout note">
     <strong>給研習老師的提醒</strong>
     維修最常見的災難是「想改一點點，結果整頁被 AI 重做」。把「只改 X、其他不動、輸出完整版」這三件事寫進每一次 prompt，就能避免 95% 的事故。
+  </div>
+</section>
+
+<!-- ============ Part 4 ============ -->
+<section id="part4">
+  <h2>4. 上傳到 GitHub，把網站變公開</h2>
+  <p>檔案做好了，但放在自己電腦裡只有你看得到。<strong>GitHub</strong> 是一個免費的「雲端硬碟 + 自動架站服務」：當你的資料夾裡有 <code>index.html</code>，它會幫你變成一個全世界都能連的真正網站。</p>
+
+  <h3>① 申請 GitHub 帳號（免費，3 分鐘）</h3>
+  <ol class="steps">
+    <li>
+      <strong>到 github.com，點右上角綠色 Sign up</strong>
+    </li>
+    <li>
+      <strong>用個人 email（不要用學校信箱）</strong>
+      學校信箱常常擋第三方驗證信，麻煩。
+    </li>
+    <li>
+      <strong>選一個 username</strong>
+      全小寫、不要空格、要短。這會出現在你的網址裡：<code>username.github.io</code>。建議用真名或短代號，不要選「sarah-english-teacher-2026」這種長串。
+    </li>
+    <li>
+      <strong>設密碼 → 收驗證信 → 點連結</strong>
+      完成。
+    </li>
+  </ol>
+
+  <h3>② 建立你的第一個 repo</h3>
+  <p>repo（repository）就是 GitHub 對「資料夾」的稱呼。要架網站，先要有一個 repo 來放檔案。</p>
+  <ol class="steps">
+    <li>
+      <strong>登入後，點右上角「+」→ New repository</strong>
+    </li>
+    <li>
+      <strong>取 repo 名稱</strong>
+      全小寫、用連字號分隔。例如：<code>my-classroom</code>、<code>english-portfolio</code>、<code>grade3-english</code>。這個名字會直接出現在網址，取了不太能改。
+    </li>
+    <li>
+      <strong>Visibility 選「Public」</strong>
+      免費 GitHub Pages 只支援 Public。放心：公開的只有你上傳的 HTML 內容，不會洩漏 email 或密碼。
+    </li>
+    <li>
+      <strong>勾「Add a README file」</strong>
+      建議勾，讓 repo 不要是空的。
+    </li>
+    <li>
+      <strong>按綠色「Create repository」</strong>
+      你現在有一個雲端資料夾了。
+    </li>
+  </ol>
+
+  <h3>③ 上傳 index.html 到 repo</h3>
+  <ol class="steps">
+    <li>
+      <strong>進入剛建好的 repo 頁面</strong>
+    </li>
+    <li>
+      <strong>點「Add file」→「Upload files」</strong>
+      就在檔案列表上方。
+    </li>
+    <li>
+      <strong>把 index.html 直接拖到網頁中央的虛線框裡</strong>
+      也可以點選後選檔案。如果有圖片資料夾，整個 <code>images/</code> 也一起拖。
+    </li>
+    <li>
+      <strong>滾到下方，按綠色「Commit changes」</strong>
+      檔案就上去了。
+    </li>
+  </ol>
+
+  <h3>④ 開啟 GitHub Pages（讓網站上線）</h3>
+  <p>到這一步，檔案在雲端但網站還沒上線。GitHub Pages 是 GitHub 提供的免費架站功能，要手動打開。</p>
+  <ol class="steps">
+    <li>
+      <strong>在 repo 頁面，點上方「Settings」分頁</strong>
+      在分頁列的最右邊。
+    </li>
+    <li>
+      <strong>左側選單捲下去找「Pages」並點進去</strong>
+    </li>
+    <li>
+      <strong>Source 選「Deploy from a branch」</strong>
+      Branch 選 <code>main</code>，資料夾選 <code>/ (root)</code>。
+    </li>
+    <li>
+      <strong>按「Save」，等 1 分鐘</strong>
+    </li>
+    <li>
+      <strong>重新整理頁面，會看到綠色框出現你的網址</strong>
+      長這樣：<code>https://username.github.io/my-classroom</code>。這就是你的網站，全世界都連得到。
+    </li>
+  </ol>
+
+  <h3>⑤ 分享你的網址</h3>
+  <p>網址直接傳 LINE、班級電子報、學校群組、家長會 LINE 群就好。學生、家長、校長，任何人只要點開連結就能看到你的網站，不需要登入、不需要安裝任何東西。</p>
+
+  <div class="callout note">
+    <strong>網站要更新怎麼辦</strong>
+    回到同一個 repo，「Add file」→「Upload files」，把修好的 <code>index.html</code> 拖上去覆蓋舊版（GitHub 會自動辨識同名檔案）。網站約 1 分鐘自動更新。維修流程（第 3 段）寫好的口訣，配合這個動作就是完整工作流。
+  </div>
+</section>
+
+<!-- ============ Part 5 ============ -->
+<section id="part5">
+  <h2>5. 進階：買網域 + 用 Gemini 教你設定 DNS</h2>
+  <p>如果你想要 <code>www.mrwang-english.com</code> 這種網址，而不是 <code>username.github.io/my-classroom</code>，可以買一個自己的網域。一年大約 NT$300–400。網域是你的，每年續約就一直是你的。</p>
+  <p>這一段是<strong>選配</strong>——免費的 <code>github.io</code> 網址其實已經夠用很多年了，等你想升級再做這步。</p>
+
+  <h3>① 在哪買網域</h3>
+  <div class="table-wrap">
+    <table class="compact">
+      <thead>
+        <tr><th>網域商</th><th>年費</th><th>說明</th></tr>
+      </thead>
+      <tbody>
+        <tr class="rec"><td>Cloudflare Registrar</td><td>US$9–12</td><td>最便宜、不搞推銷，<strong>推薦</strong></td></tr>
+        <tr><td>Namecheap</td><td>US$10–15</td><td>介面對新手友善</td></tr>
+        <tr><td>Porkbun</td><td>US$9–12</td><td>內含 WHOIS 隱私保護</td></tr>
+        <tr class="avoid"><td>GoDaddy</td><td>US$20+</td><td>強推銷一堆有的沒的，避開</td></tr>
+        <tr class="avoid"><td>Google Domains</td><td>—</td><td>已關閉，併入 Squarespace</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>② 在 GitHub 設定你的自訂網域</h3>
+  <ol class="steps">
+    <li>
+      <strong>回到你的 repo → Settings → Pages</strong>
+    </li>
+    <li>
+      <strong>在「Custom domain」欄位填入你的網域</strong>
+      例如：<code>www.mrwang-english.com</code>
+    </li>
+    <li>
+      <strong>按 Save</strong>
+      GitHub 這邊就交代完了，接下來換網域商那邊。
+    </li>
+  </ol>
+
+  <h3>③ 在網域商後台加 DNS 紀錄</h3>
+  <p>DNS 紀錄就是「告訴整個網路：這個網址要指向 GitHub 的伺服器」。登入你買網域的網域商後台，加以下五筆紀錄：</p>
+  <div class="table-wrap">
+    <table class="compact">
+      <thead><tr><th>Type</th><th>Host</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>CNAME</td><td>www</td><td>username.github.io</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.108.153</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.109.153</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.110.153</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.111.153</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>把 <code>username</code> 換成你自己的 GitHub username。儲存後等 10 分鐘到 24 小時，網域就會生效。</p>
+
+  <h3>④ 不會設？請 Gemini 一步步教你</h3>
+  <p>每家網域商的後台介面都長不一樣（Cloudflare、Namecheap、GoDaddy 都不同）。最直接的辦法是問 Gemini，請它針對你買的那一家給你逐步指引。</p>
+
+  <div class="prompt">我剛在 Cloudflare 買了網域：mrwang-english.com
+我的網站架在 GitHub Pages：username.github.io/my-classroom
+（請把 username 換成你自己的 GitHub username）
+
+請逐步教我：
+在 Cloudflare 後台的哪個位置、按哪個按鈕、在哪個欄位填什麼，
+來新增以下 DNS 紀錄：
+
+- 1 筆 CNAME 紀錄
+  Host: www
+  Value: username.github.io
+
+- 4 筆 A 紀錄（指向 GitHub 的 IP）
+  Host: @
+  Value: 185.199.108.153 / 109.153 / 110.153 / 111.153
+
+請用繁體中文，給我具體的操作步驟（不要只給觀念說明）。
+如果我看不懂某一步，我會再追問。</div>
+
+  <div class="callout note">
+    <strong>最後一步：HTTPS 鎖頭</strong>
+    DNS 生效後（約 1 小時到 1 天），回到 GitHub → Settings → Pages，會看到「Enforce HTTPS」可以勾。勾起來，你的網址前面就會有 🔒 鎖頭，看起來像正式網站，瀏覽器也不會出現「不安全」警告。
+  </div>
+
+  <div class="callout warn">
+    <strong>不要急著買網域</strong>
+    新手最常見的陷阱是「網站還沒做好就先衝去買網域」。建議：用免費的 <code>github.io</code> 跑 3–6 個月，確定你會持續用，再買網域。網域沒續約就會被別人搶走，不要花冤枉錢。
   </div>
 </section>
 
