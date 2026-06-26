@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build Your Own Website with AI · Teacher Workshop Companion</title>
+  <meta name="description" content="A practical, step-by-step companion to the My Culture Connect teacher workshop on building free websites with Gemini and GitHub Pages." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:        #0F766E;
+      --teal-dark:   #115E59;
+      --teal-darker: #134E4A;
+      --teal-light:  #CCFBF1;
+      --teal-pale:   #F0FDFA;
+      --accent:      #14B8A6;
+      --ink:         #0F172A;
+      --slate:       #334155;
+      --mute:        #64748B;
+      --line:        #E2E8F0;
+      --line-soft:   #F1F5F9;
+      --bg:          #FFFFFF;
+      --bg-soft:     #F8FAFC;
+      --good:        #047857;
+      --warn-bg:     #FEF3C7;
+      --warn-fg:     #92400E;
+      --warn-deep:   #78350F;
+      --code-bg:     #0F172A;
+      --code-fg:     #E2E8F0;
+      --code-accent: #5EEAD4;
+      --font:        'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --mono:        'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+      --shadow-sm:   0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.06);
+      --shadow-md:   0 4px 12px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.65;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: var(--teal); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .15s; }
+    a:hover { border-bottom-color: var(--teal); }
+
+    /* ── Top nav ── */
+    nav.topnav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: .85rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem;
+    }
+    nav.topnav .brand { font-weight: 700; font-size: .95rem; color: var(--ink); letter-spacing: -.01em; }
+    nav.topnav .brand span { color: var(--teal); }
+    nav.topnav .links { display: flex; gap: 1.25rem; font-size: .85rem; }
+    nav.topnav .links a {
+      color: var(--mute); font-weight: 500; border-bottom: none;
+    }
+    nav.topnav .links a:hover { color: var(--teal); }
+    @media (max-width: 720px) { nav.topnav .links { display: none; } }
+
+    /* ── Hero ── */
+    .hero {
+      background: var(--teal-darker);
+      color: #fff;
+      padding: 5rem 1.5rem 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; left: 0; width: 8px;
+      background: var(--accent);
+    }
+    .hero-inner { max-width: 920px; margin: 0 auto; }
+    .hero .kicker {
+      font-size: .78rem; letter-spacing: .25em; font-weight: 600;
+      color: var(--teal-light); text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      font-weight: 800; line-height: 1.05;
+      letter-spacing: -.02em;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 .accent-bar {
+      display: inline-block; width: 56px; height: 5px;
+      background: var(--accent); margin: 1rem 0 0; vertical-align: middle;
+    }
+    .hero p.lead {
+      font-size: 1.15rem; color: var(--teal-light); max-width: 640px;
+      line-height: 1.6;
+    }
+    .hero .meta {
+      margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;
+      font-size: .85rem; color: rgba(255,255,255,.7);
+    }
+    .hero .meta span { display: inline-flex; align-items: center; gap: .4rem; }
+    .hero .meta strong { color: #fff; font-weight: 600; }
+
+    /* ── Section shell ── */
+    section.content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+    section.content:not(:last-of-type) { border-bottom: 1px solid var(--line-soft); }
+
+    .step-kicker {
+      display: inline-flex; align-items: center; gap: .6rem;
+      font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--teal); font-weight: 700;
+      margin-bottom: .85rem;
+    }
+    .step-kicker .badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.6rem; height: 1.6rem; border-radius: 50%;
+      background: var(--teal); color: #fff; font-size: .8rem;
+      font-weight: 700; letter-spacing: 0;
+    }
+    h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+      font-weight: 700; letter-spacing: -.015em;
+      line-height: 1.2; color: var(--ink);
+      margin-bottom: 1.25rem;
+    }
+    h3 {
+      font-size: 1.15rem; font-weight: 600;
+      color: var(--ink); margin: 2rem 0 .75rem;
+    }
+    section.content p { color: var(--slate); margin-bottom: 1rem; }
+    section.content ul, section.content ol { margin: 0 0 1rem 1.4rem; }
+    section.content li { margin-bottom: .4rem; color: var(--slate); }
+
+    /* ── Table of contents ── */
+    .toc {
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 0;
+    }
+    .toc h3 {
+      margin: 0 0 1rem; font-size: .78rem;
+      letter-spacing: .25em; text-transform: uppercase;
+      color: var(--mute); font-weight: 700;
+    }
+    .toc ol { margin: 0; list-style: none; counter-reset: toc; padding: 0; }
+    .toc ol li {
+      counter-increment: toc; padding: .35rem 0;
+      border-bottom: 1px solid var(--line-soft); margin: 0;
+    }
+    .toc ol li:last-child { border-bottom: none; }
+    .toc ol li::before {
+      content: counter(toc, decimal-leading-zero);
+      color: var(--teal); font-weight: 700; font-variant-numeric: tabular-nums;
+      margin-right: .9rem; font-size: .85rem;
+    }
+    .toc ol li a { color: var(--ink); border-bottom: none; font-weight: 500; }
+    .toc ol li a:hover { color: var(--teal); }
+
+    /* ── Code block ── */
+    pre.code {
+      background: var(--code-bg);
+      color: var(--code-fg);
+      font-family: var(--mono);
+      font-size: .9rem; line-height: 1.6;
+      padding: 1.25rem 1.5rem;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      box-shadow: var(--shadow-md);
+    }
+    pre.code .comment { color: var(--code-accent); opacity: .85; }
+    pre.code .key { color: #FCD34D; }
+    code.inline {
+      font-family: var(--mono); font-size: .85em;
+      background: var(--bg-soft);
+      padding: .15rem .4rem; border-radius: 4px;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    /* ── Prompt card (highlighted Gemini prompt) ── */
+    .prompt-card {
+      background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal) 100%);
+      color: #fff; border-radius: 12px;
+      padding: 1.75rem 2rem; margin: 1.5rem 0;
+      box-shadow: var(--shadow-md);
+    }
+    .prompt-card .label {
+      font-size: .72rem; letter-spacing: .2em;
+      color: var(--teal-light); text-transform: uppercase; font-weight: 600;
+      margin-bottom: .85rem;
+    }
+    .prompt-card .prompt-text {
+      font-family: var(--mono); font-size: .92rem; line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    /* ── Callouts ── */
+    .callout {
+      border-radius: 10px; padding: 1.1rem 1.4rem;
+      margin: 1.25rem 0; border-left: 4px solid;
+      font-size: .95rem; line-height: 1.55;
+    }
+    .callout.warn  { background: var(--warn-bg); border-color: var(--warn-fg); color: var(--warn-deep); }
+    .callout.tip   { background: var(--teal-pale); border-color: var(--teal); color: var(--teal-darker); }
+    .callout strong { font-weight: 700; }
+
+    /* ── Step list with numbered circles ── */
+    ol.steps {
+      list-style: none; counter-reset: stp; padding: 0; margin: 1rem 0;
+    }
+    ol.steps li {
+      counter-increment: stp; position: relative;
+      padding: 0 0 1.25rem 3rem; margin-bottom: 0;
+      border-left: 2px solid var(--line);
+      margin-left: 1rem;
+    }
+    ol.steps li:last-child { border-left-color: transparent; padding-bottom: 0; }
+    ol.steps li::before {
+      content: counter(stp);
+      position: absolute; left: -1.1rem; top: -.1rem;
+      width: 2.1rem; height: 2.1rem; border-radius: 50%;
+      background: var(--teal); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .95rem;
+      border: 4px solid var(--bg);
+    }
+    ol.steps li strong { color: var(--ink); display: block; font-size: 1.05rem; margin-bottom: .25rem; }
+    ol.steps li span.body { color: var(--slate); }
+    ol.steps li code.inline { font-size: .85em; }
+
+    /* ── DNS table ── */
+    .dns-table {
+      width: 100%; border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-family: var(--mono); font-size: .9rem;
+      background: var(--bg);
+      border-radius: 10px; overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--line);
+    }
+    .dns-table th {
+      background: var(--teal); color: #fff;
+      padding: .7rem 1rem; text-align: left;
+      font-size: .72rem; letter-spacing: .15em;
+      text-transform: uppercase; font-weight: 700;
+      font-family: var(--font);
+    }
+    .dns-table td {
+      padding: .7rem 1rem; border-top: 1px solid var(--line);
+      color: var(--ink);
+    }
+    .dns-table tr:nth-child(even) td { background: var(--bg-soft); }
+
+    /* ── Registrar table ── */
+    .registrar-table {
+      width: 100%; border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: .9rem;
+      border: 1px solid var(--line);
+      border-radius: 10px; overflow: hidden;
+    }
+    .registrar-table th, .registrar-table td {
+      padding: .75rem 1rem; text-align: left;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .registrar-table th {
+      background: var(--bg-soft); color: var(--mute);
+      font-size: .72rem; letter-spacing: .15em;
+      text-transform: uppercase; font-weight: 700;
+    }
+    .registrar-table tr:last-child td { border-bottom: none; }
+    .registrar-table tr.rec td { background: #ECFDF5; color: var(--good); font-weight: 600; }
+    .registrar-table tr.avoid td { background: #FEF2F2; color: #991B1B; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--teal-darker);
+      color: var(--teal-light);
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    footer .accent-bar {
+      display: block; width: 56px; height: 5px;
+      background: var(--accent); margin: 0 auto 1.5rem;
+    }
+    footer p { margin-bottom: .5rem; font-size: .9rem; }
+    footer .email { color: #fff; font-weight: 600; }
+    footer .email a { color: #fff; border-bottom-color: var(--accent); }
+    footer .small { color: rgba(255,255,255,.5); font-size: .78rem; margin-top: 1rem; }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      .hero { padding: 3.5rem 1.25rem 4rem; }
+      section.content { padding: 3rem 1.25rem; }
+      .prompt-card, pre.code { padding: 1.1rem 1.2rem; font-size: .82rem; }
+      .toc { padding: 1.25rem; }
+      ol.steps li { padding-left: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <div class="brand">Build Your Own Website with <span>AI</span></div>
+    <div class="links">
+      <a href="#account">Account</a>
+      <a href="#prompt">Prompt</a>
+      <a href="#publish">Publish</a>
+      <a href="#domain">Domain</a>
+      <a href="#help">Help</a>
+    </div>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- HERO -->
+  <!-- ============================================================ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="kicker">Teacher Workshop Companion · My Culture Connect</div>
+      <h1>
+        Build your own<br />website with AI.<br />
+        <span class="accent-bar"></span>
+      </h1>
+      <p class="lead">
+        A practical, step-by-step companion to the in-person workshop.
+        No coding required — Gemini writes the HTML, GitHub hosts it for free,
+        and the whole site is yours forever.
+      </p>
+      <div class="meta">
+        <span><strong>Cost:</strong> $0 / year</span>
+        <span><strong>Time:</strong> ~60 minutes</span>
+        <span><strong>Difficulty:</strong> Beginner-friendly</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TOC -->
+  <!-- ============================================================ -->
+  <section class="content">
+    <div class="toc">
+      <h3>What's inside</h3>
+      <ol>
+        <li><a href="#account">Create your free GitHub account</a></li>
+        <li><a href="#prompt">Prompt Gemini to write your HTML</a></li>
+        <li><a href="#save">Save the code as index.html</a></li>
+        <li><a href="#repo">Create a new GitHub repository</a></li>
+        <li><a href="#upload">Upload your file</a></li>
+        <li><a href="#publish">Turn on GitHub Pages</a></li>
+        <li><a href="#domain">Connect your own domain (optional)</a></li>
+        <li><a href="#troubleshoot">Troubleshooting common errors</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- STEP 1 — ACCOUNT -->
+  <!-- ============================================================ -->
+  <section class="content" id="account">
+    <div class="step-kicker"><span class="badge">1</span> Step One</div>
+    <h2>Create your free GitHub account.</h2>
+    <p>GitHub is essentially Google Drive for code — a free place to store files online. When the folder contains an <code class="inline">index.html</code>, GitHub can turn it into a live website for the whole world. The free plan is enough for everything in this guide.</p>
+
+    <ol class="steps">
+      <li>
+        <strong>Go to <a href="https://github.com" target="_blank" rel="noopener">github.com</a>.</strong>
+        <span class="body">Click the green <em>Sign up</em> button at the top right.</span>
+      </li>
+      <li>
+        <strong>Enter your email.</strong>
+        <span class="body">Use a personal email you check often — not your school address. Many schools restrict third-party verification emails.</span>
+      </li>
+      <li>
+        <strong>Pick a username.</strong>
+        <span class="body">Short, lowercase, no spaces. This becomes part of your URL: <code class="inline">yourname.github.io</code>. Pick something you'd be happy to give to a parent — it stays with you for life.</span>
+      </li>
+      <li>
+        <strong>Create a password.</strong>
+        <span class="body">Save it in your browser or password manager — you'll need it for every upload.</span>
+      </li>
+      <li>
+        <strong>Verify your email.</strong>
+        <span class="body">Open the verification email from GitHub and click the link. You're in.</span>
+      </li>
+    </ol>
+
+    <div class="callout tip">
+      <strong>Tip ·</strong> Keep your username short. "sarah-thomas" beats "sarah-thomas-english-teacher-2026" — the latter shows up in your URL forever.
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- STEP 2 — PROMPT GEMINI -->
+  <!-- ============================================================ -->
+  <section class="content" id="prompt">
+    <div class="step-kicker"><span class="badge">2</span> Step Two</div>
+    <h2>Prompt Gemini to write your HTML.</h2>
+    <p>Open <a href="https://gemini.google.com" target="_blank" rel="noopener">gemini.google.com</a> and sign in with your Google account. Then describe the website you want, in plain English. The clearer your prompt, the better the result.</p>
+
+    <h3>A starter prompt to copy</h3>
+    <div class="prompt-card">
+      <div class="label">Sample Prompt</div>
+      <div class="prompt-text">Write a single-file index.html for an English teacher's portfolio.
+
+Sections:
+• Hero with my name "Sarah Thomas" and a one-line bio
+• About me (2–3 short paragraphs)
+• Classes I teach (a list of 4 classes with short descriptions)
+• Contact (my email: sarah@example.com)
+
+Style: modern, one accent color (teal), Google Font "Inter", mobile-friendly.
+No external dependencies. Put all CSS and JS inside the same HTML file.</div>
+    </div>
+
+    <h3>Iterate until it looks right</h3>
+    <p>Don't expect perfection on the first try. Read Gemini's reply, then ask for changes in plain English:</p>
+    <ul>
+      <li>"Make the hero section bigger and add a photo placeholder."</li>
+      <li>"Change the accent color from teal to navy."</li>
+      <li>"Add a section for parent reviews with three testimonials."</li>
+      <li>"The mobile version looks cramped — increase the padding."</li>
+    </ul>
+
+    <div class="callout tip">
+      <strong>Tip ·</strong> Always ask for a <em>single-file</em> HTML and say <em>"no external dependencies."</em> That way the whole site is one file you can upload anywhere.
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- STEP 3 — SAVE -->
+  <!-- ============================================================ -->
+  <section class="content" id="save">
+    <div class="step-kicker"><span class="badge">3</span> Step Three</div>
+    <h2>Save the code as index.html.</h2>
+    <p>Copy Gemini's full HTML output (look for the copy icon at the top of the code block). Then save it as a plain text file named exactly <code class="inline">index.html</code>.</p>
+
+    <h3>On a Mac (TextEdit)</h3>
+    <ol class="steps">
+      <li><strong>Open TextEdit.</strong> <span class="body">It's in your Applications folder.</span></li>
+      <li><strong>Format → Make Plain Text.</strong> <span class="body">This is critical — TextEdit defaults to rich text, which will break your HTML.</span></li>
+      <li><strong>Paste Gemini's code.</strong></li>
+      <li><strong>File → Save As → name it <code class="inline">index.html</code>.</strong> <span class="body">If TextEdit asks "Use .txt or .html?", choose <em>Use .html</em>.</span></li>
+    </ol>
+
+    <h3>On Windows (Notepad)</h3>
+    <ol class="steps">
+      <li><strong>Open Notepad.</strong></li>
+      <li><strong>Paste Gemini's code.</strong></li>
+      <li><strong>File → Save As → <code class="inline">index.html</code>.</strong> <span class="body">In the "Save as type" dropdown, choose <em>All Files</em> (otherwise Notepad will save it as <code class="inline">index.html.txt</code>).</span></li>
+    </ol>
+
+    <div class="callout warn">
+      <strong>⚠ Common mistake ·</strong> Your computer may add <code class="inline">.txt</code> to the filename automatically. The file <strong>must</strong> end in <code class="inline">.html</code> — not <code class="inline">.html.txt</code>. On a Mac, turn on <em>Finder → Settings → Advanced → Show all filename extensions</em> so you can see what your file is really called.
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- STEP 4 — REPO -->
+  <!-- ============================================================ -->
+  <section class="content" id="repo">
+    <div class="step-kicker"><span class="badge">4</span> Step Four</div>
+    <h2>Create a new GitHub repository.</h2>
+    <p>A "repository" is just GitHub's word for a project folder. You need one to hold your <code class="inline">index.html</code>.</p>
+
+    <ol class="steps">
+      <li>
+        <strong>Click the "+" icon at the top right of github.com.</strong>
+        <span class="body">Choose <em>New repository</em> from the dropdown.</span>
+      </li>
+      <li>
+        <strong>Name your repository.</strong>
+        <span class="body">Lowercase, no spaces. Use a hyphen for word breaks. Examples: <code class="inline">my-classroom</code>, <code class="inline">sarah-portfolio</code>, <code class="inline">grade-3-english</code>. This name becomes part of your site URL.</span>
+      </li>
+      <li>
+        <strong>Set it to <em>Public</em>.</strong>
+        <span class="body">Required for free GitHub Pages hosting. Don't worry — only the contents of <code class="inline">index.html</code> are public, not your email address or password.</span>
+      </li>
+      <li>
+        <strong>Tick "Add a README file."</strong>
+        <span class="body">Optional, but it keeps the repository from being empty before your upload.</span>
+      </li>
+      <li>
+        <strong>Click the green "Create repository" button.</strong>
+        <span class="body">You now have an empty folder online, ready for your <code class="inline">index.html</code>.</span>
+      </li>
+    </ol>
+
+    <div class="callout tip">
+      <strong>What your URLs will look like</strong><br />
+      Repository: <code class="inline">github.com/yourname/my-classroom</code><br />
+      Live website: <code class="inline">yourname.github.io/my-classroom</code>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- STEP 5 — UPLOAD -->
+  <!-- ============================================================ -->
+  <section class="content" id="upload">
+    <div class="step-kicker"><span class="badge">5</span> Step Five</div>
+    <h2>Upload your file.</h2>
+    <ol class="steps">
+      <li><strong>Open your new repository on github.com.</strong></li>
+      <li><strong>Click "Add file" → "Upload files".</strong> <span class="body">It's the button just above the file list.</span></li>
+      <li><strong>Drag your <code class="inline">index.html</code> into the dashed upload area.</strong> <span class="body">Or click to browse your files.</span></li>
+      <li><strong>Scroll down to the green "Commit changes" box.</strong> <span class="body">You don't need to change anything in this box.</span></li>
+      <li><strong>Click the green "Commit changes" button.</strong> <span class="body">You'll see your <code class="inline">index.html</code> appear in the file list.</span></li>
+    </ol>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- STEP 6 — PUBLISH -->
+  <!-- ============================================================ -->
+  <section class="content" id="publish">
+    <div class="step-kicker"><span class="badge">6</span> Step Six</div>
+    <h2>Turn on GitHub Pages.</h2>
+    <p>This last step is what takes your file and turns it into a live website that anyone can visit.</p>
+
+    <ol class="steps">
+      <li><strong>Inside your repository, click the "Settings" tab.</strong> <span class="body">It's near the right end of the tabs row.</span></li>
+      <li><strong>In the left sidebar, scroll down and click "Pages."</strong></li>
+      <li>
+        <strong>Under "Source," choose "Deploy from a branch."</strong>
+        <span class="body">Set the branch to <code class="inline">main</code> and the folder to <code class="inline">/ (root)</code>.</span>
+      </li>
+      <li><strong>Click "Save."</strong> <span class="body">Wait about one minute.</span></li>
+      <li>
+        <strong>Refresh the Pages settings page.</strong>
+        <span class="body">You'll see a green box with your live URL: <code class="inline">https://yourname.github.io/my-classroom</code>. That's your website. Share it with students, parents, the principal.</span>
+      </li>
+    </ol>
+
+    <div class="callout tip">
+      <strong>Updating your site later ·</strong> Whenever you want to change something, just upload a new <code class="inline">index.html</code> to the same repository (Add file → Upload files → overwrite the old one). The site updates in about a minute.
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- STEP 7 — DOMAIN -->
+  <!-- ============================================================ -->
+  <section class="content" id="domain">
+    <div class="step-kicker"><span class="badge">7</span> Optional</div>
+    <h2>Connect your own domain.</h2>
+    <p>Want <code class="inline">www.teachersarah.com</code> instead of the default GitHub URL? You can — for around $10 per year. The domain is yours as long as you keep renewing.</p>
+
+    <h3>Where to buy (registrars)</h3>
+    <table class="registrar-table">
+      <thead>
+        <tr><th>Registrar</th><th>Price / year</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr class="rec">
+          <td>Cloudflare Registrar</td>
+          <td>$9 – $12</td>
+          <td>Cheapest, no upsells — <strong>recommended</strong>.</td>
+        </tr>
+        <tr>
+          <td>Namecheap</td>
+          <td>$10 – $15</td>
+          <td>Beginner-friendly interface.</td>
+        </tr>
+        <tr>
+          <td>Porkbun</td>
+          <td>$9 – $12</td>
+          <td>Free WHOIS privacy included.</td>
+        </tr>
+        <tr class="avoid">
+          <td>GoDaddy</td>
+          <td>$20+</td>
+          <td>Aggressive upsells — avoid.</td>
+        </tr>
+        <tr class="avoid">
+          <td>Google Domains</td>
+          <td>—</td>
+          <td>Closed; now part of Squarespace — avoid.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>DNS records to add</h3>
+    <p>Once you've bought your domain, log in to your registrar and add these DNS records. They tell the internet to point your domain at GitHub's servers.</p>
+    <table class="dns-table">
+      <thead>
+        <tr><th>Type</th><th>Host</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>CNAME</td><td>www</td><td>yourname.github.io</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.108.153</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.109.153</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.110.153</td></tr>
+        <tr><td>A</td><td>@</td><td>185.199.111.153</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Tell GitHub about your domain</h3>
+    <ol class="steps">
+      <li><strong>In your repository, go to Settings → Pages.</strong></li>
+      <li><strong>Enter your domain in the "Custom domain" field.</strong> <span class="body">e.g. <code class="inline">www.teachersarah.com</code></span></li>
+      <li><strong>Save and wait.</strong> <span class="body">DNS propagation usually takes 10 minutes to 24 hours.</span></li>
+      <li><strong>Tick "Enforce HTTPS"</strong> <span class="body">once the option becomes available (after the certificate is issued). This gives your site the padlock icon in browsers.</span></li>
+    </ol>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TROUBLESHOOTING -->
+  <!-- ============================================================ -->
+  <section class="content" id="troubleshoot">
+    <div class="step-kicker"><span class="badge">!</span> Common Errors</div>
+    <h2>Troubleshooting.</h2>
+
+    <h3>"My site shows the README instead of my page."</h3>
+    <p>Your repository needs a file named <strong>exactly</strong> <code class="inline">index.html</code> at the top level. If GitHub is showing your README, your HTML file is probably named <code class="inline">index.html.txt</code> or sitting in a subfolder. Re-upload with the correct name.</p>
+
+    <h3>"I clicked Save in Pages but nothing happens."</h3>
+    <p>Wait at least 1–2 minutes, then refresh the Settings → Pages page. The green URL banner usually appears within 60 seconds, but first-time deploys can take longer.</p>
+
+    <h3>"My custom domain doesn't load yet."</h3>
+    <p>DNS changes can take up to 24 hours to propagate globally. If it's been less than a day, wait. If it's been more than 24 hours, double-check that all four <code class="inline">A</code> records were saved correctly at your registrar.</p>
+
+    <h3>"My site has no styling — it looks like plain text."</h3>
+    <p>Gemini may have generated separate CSS in a different code block. Either ask Gemini to inline all CSS into the same HTML file, or copy the CSS into a <code class="inline">&lt;style&gt;</code> tag inside <code class="inline">&lt;head&gt;</code>.</p>
+
+    <h3>"I made a change to my file but the site looks the same."</h3>
+    <p>Browsers cache pages. Force-refresh: <code class="inline">⌘ + Shift + R</code> on Mac, <code class="inline">Ctrl + Shift + R</code> on Windows. Or open the page in a private/incognito window.</p>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- FOOTER -->
+  <!-- ============================================================ -->
+  <footer id="help">
+    <span class="accent-bar"></span>
+    <p>Stuck? Want a second pair of eyes?</p>
+    <p class="email">Email <a href="mailto:luke@mycultureconnect.org">luke@mycultureconnect.org</a></p>
+    <p class="small">Companion to the My Culture Connect teacher workshop · June 17, 2026</p>
+  </footer>
+
+</body>
+</html>
